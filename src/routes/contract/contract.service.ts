@@ -8,7 +8,7 @@ service.getById = async (req, res) => {
     const contract = await Contract.findOne({
       where: {
         id,
-        [Op.or]: [{ ContractorId: req.profile }, { ClientId: req.profile }]
+        [Op.or]: [{ ContractorId: req.profile.id }, { ClientId: req.profile.id }]
       }
     });
     if (!contract) return null;

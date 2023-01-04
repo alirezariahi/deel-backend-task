@@ -6,7 +6,7 @@ export default class Controller {
     try {
       const result = await this.service[methodName](req, res);
       if (!result) {
-        res.send(httpError[404]);
+        res.status(404).json(httpError.NotFound());
       } else {
         res.status(200).json(result);
       }

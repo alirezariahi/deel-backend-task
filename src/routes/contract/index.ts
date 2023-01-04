@@ -1,6 +1,6 @@
 import express from "express";
 import { getProfile } from "../../middleware/getProfile";
-import { getContractById } from "./contract.controller";
+import { getContractById, getAllContracts } from "./contract.controller";
 
 const contractRouter = express.Router();
 
@@ -9,5 +9,6 @@ const contractRouter = express.Router();
  * @returns contract by id
  */
 contractRouter.get("/:id", getProfile, getContractById);
+contractRouter.get("/", getProfile, getAllContracts);
 
 export default contractRouter;

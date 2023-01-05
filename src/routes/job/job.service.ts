@@ -1,22 +1,36 @@
 import { Op } from "sequelize";
-import { Job } from "../../model";
+import { Job, Contract } from "../../model";
 const service: any = {};
 
-service.getById = async (req, res) => {
+service.getUnpaid = async (req, res) => {
   try {
-    const { id } = req.params;
-    const contract = await Contract.findOne({
+    const userId = req.profile.id;
+    const unpaidJobs = await Job.findAll({
+      include: [
+        {
+          attributes: [],
+          model: Contract,
+          required: true,
+          where: {
+            [Op.or]: [{ ContractorId: userId }, { ClientId: userId }],
+            status: {
+              [Op.eq]: "in_progress"
+            }
+          }
+        }
+      ],
       where: {
-        id,
-        [Op.or]: [{ ContractorId: req.profile.id }, { ClientId: req.profile.id }]
+        [Op.or]: [{ paid: false }, { paid: null }]
       }
     });
-    if (!contract) return null;
-    return contract;
-  } catch (err) {}
+    if (!unpaidJobs || !unpaidJobs?.length) return null;
+    return unpaidJobs;
+  } catch (err) {
+    throw err;
+  }
 };
 
-service.allNonTerminate = async (req, res) => {
+service.pay = async (req, res) => {
   try {
     const contract = await Contract.findAll({
       where: {
@@ -28,7 +42,9 @@ service.allNonTerminate = async (req, res) => {
     });
     if (!contract) return null;
     return contract;
-  } catch (err) {}
+  } catch (err) {
+    throw err;
+  }
 };
 
 export default service;

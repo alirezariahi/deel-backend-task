@@ -13,7 +13,9 @@ service.getById = async (req, res) => {
     });
     if (!contract) return null;
     return contract;
-  } catch (err) {}
+  } catch (err) {
+    throw err;
+  }
 };
 
 service.allNonTerminate = async (req, res) => {
@@ -28,7 +30,9 @@ service.allNonTerminate = async (req, res) => {
     });
     if (!contract) return null;
     return contract;
-  } catch (err) {}
+  } catch (err) {
+    throw err;
+  }
 };
 
 export default service;

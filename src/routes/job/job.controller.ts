@@ -3,8 +3,8 @@ import service from "./job.service";
 
 const controller = new Controller(service);
 
-export const getContractById = async (req, res) => {
-  controller.defaultRouterController("getById", req, res);
+export const getUnpaidJobs = async (req, res) => {
+  controller.defaultRouterController("getUnpaid", req, res);
 };
 
 export const getAllContracts = async (req, res) => {

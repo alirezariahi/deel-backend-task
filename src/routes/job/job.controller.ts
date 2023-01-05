@@ -7,6 +7,6 @@ export const getUnpaidJobs = async (req, res) => {
   controller.defaultRouterController("getUnpaid", req, res);
 };
 
-export const getAllContracts = async (req, res) => {
-  controller.defaultRouterController("allNonTerminate", req, res);
+export const payForJob = async (req, res) => {
+  controller.defaultRouterController("pay", req, res);
 };

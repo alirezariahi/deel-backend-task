@@ -12,7 +12,7 @@ export default class Controller {
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error });
+      res.status(500).json({ error: error.message });
     }
   };
 }

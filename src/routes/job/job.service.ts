@@ -1,4 +1,4 @@
-import { Op, Transaction } from "sequelize";
+import { Op } from "sequelize";
 import { Job, Contract, Profile, sequelize } from "../../model";
 const service: any = {};
 
@@ -31,6 +31,7 @@ service.getUnpaid = async (req, res) => {
 };
 
 service.pay = async (req, res) => {
+  const transaction = await sequelize.transaction();
   try {
     if (req.profile.type !== "client") throw new Error("you can't make any payment!");
 
@@ -52,7 +53,6 @@ service.pay = async (req, res) => {
     const contractor: any = await Profile.findOne({ where: { id: job.Contract.ContractorId } });
     if (!contractor) throw new Error("contractor not found!");
 
-    const transaction = await sequelize.transaction();
     console.log(req.profile.id);
     await Profile.update(
       { balance: req.profile.balance - job.price },
@@ -74,6 +74,7 @@ service.pay = async (req, res) => {
 
     return "payment has been successfully";
   } catch (err) {
+    await transaction.rollback();
     throw err;
   }
 };

@@ -47,13 +47,11 @@ service.pay = async (req, res) => {
     if (!job) throw new Error("the job not found!");
     if (job.paid) throw new Error("you can't pay again!");
 
-    console.log(req.profile.balance, job.price);
     if (req.profile.balance < job.price) throw new Error("your balance is insufficient!");
 
     const contractor: any = await Profile.findOne({ where: { id: job.Contract.ContractorId } });
     if (!contractor) throw new Error("contractor not found!");
 
-    console.log(req.profile.id);
     await Profile.update(
       { balance: req.profile.balance - job.price },
       { where: { id: req.profile.id }, transaction }
